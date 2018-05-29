@@ -21,6 +21,6 @@ export class UserService {
   }
 
   findOneByEmail(mail: string): Promise<User> {
-    return this.userRepository.findOneOrFail({ email: mail });
+    return this.userRepository.findOne({ email: mail });
   }
 }

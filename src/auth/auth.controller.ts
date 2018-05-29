@@ -1,6 +1,7 @@
 import { Controller, Get, UseGuards, Param, HttpException, HttpStatus, Post, Body, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { User } from '../user/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -27,6 +28,11 @@ export class AuthController {
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  @Post('/signup')
+  async signup(@Body() user: User): Promise<any> {
+    return await this.authService.signup(user);
   }
 
   @Get('data')

@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
@@ -41,5 +41,19 @@ export class AuthService {
 
   async validateUser(payload: JwtPayload): Promise<any> {
     return await this.userService.findOneByEmail(payload.email);
+  }
+
+  async signup(user: User): Promise<any> {
+    try {
+      const tempUser = await this.userService.findOneByEmail(user.email);
+      if (tempUser) return new UnauthorizedException('E-Mail is in use!');
+
+      if (!tempUser) {
+        console.log('jo');
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
 }
